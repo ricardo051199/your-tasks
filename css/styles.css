@@ -1,0 +1,151 @@
+/*
+font-family: 'Krona One', sans-serif;
+font-family: 'Mulish', sans-serif;
+*/
+:root{
+    --primary:#111B54;
+    --light:#fff;
+    --grey:#efefef;
+}
+body{
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    color: var(--primary);
+}
+*{
+    color: #000;
+}
+h4{
+    color:var(--light);
+    font-weight: bold;
+}
+* a{
+    color: var(--light);
+}
+.bg-primary{background-color: var(--primary) !important;}
+
+#sidebar-container{
+    min-height: 100vh;
+    width: 350px;
+    text-align: center;
+}
+#sidebar-container .logo{
+    padding: .875rem 1.25rem;
+}
+#sidebar-container .menu{
+    width: 100%;
+}
+.menu a{
+    display: block;
+    text-decoration: none;
+    color: var(--light);
+    font-size: 16px;
+    padding: 15px;
+    margin-left: 4px;
+}
+.menu a ion-icon{
+    padding-right: 10px;
+    color: #fff;
+}
+section{
+    padding: 30px;
+}
+.btn{
+    margin-top: 10px;
+    font-size: 18px;
+}
+#Lista-de-tareas{
+    margin-top: 50px;
+    width: 700px;
+}
+.accordion-item{
+    padding-left: 10px;
+}
+.accordion-header{
+    width: 97%;
+}
+.accordion-button{
+    width: 100%;
+}
+.accordion-button h2{
+    width: 90%;
+}
+
+div.task-description{
+    padding-top: 10px;
+}
+
+.btnsTasks{
+    padding-top: 15px;
+}
+
+.task-deadline{
+    padding-top: 10px;
+}
+
+#btnCreateTask{
+    border-radius: 20px;
+    border: solid #111B54;
+    border-width: 1.5px;
+}
+
+#btnCreateTask:hover{
+    background-color: #111B54;
+    color: white;
+}
+#btnCreateTask:hover ion-icon{
+    color: #fff;
+}
+
+.form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+/*-------------*/
+
+
+.hidden-box:checked + .check-label .accordion-button{
+    text-decoration:line-through;
+    color: rgba(92, 89, 89, 0.445);
+}
+
+.search-bar-container{
+    padding: 10px 0px;
+    margin: 10px 0px;
+}
+
+.checked{
+    background-color: aqua;
+}
+
+#btnShowModal{
+    margin: 1rem;
+}
+
+#task-modal{
+    display: none;
+    background-color: #111B54;
+    color: white;
+    margin: 5%;
+    position: absolute;
+    left: 25%;
+    border: white solid;
+    padding: 1rem 3rem;
+}
+#btnCloserModal{
+    position: absolute;
+    right: -3%;
+    top: -7%;
+    border: white solid;
+    border-radius: 5rem;
+    color: white;
+}
+#task-modal, h2, label{
+    color: white;
+}
