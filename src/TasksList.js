@@ -1,8 +1,9 @@
-import {Task,getTags} from "./Task.js"
+import {Task} from "./Task.js"
 
 class TasksList {
 
-    constructor() {
+    constructor()
+    {
         this.tasksList = [];
 
     }
@@ -12,27 +13,31 @@ class TasksList {
         return this.tasksList;
     }
 
-    getTasksNamesList() {
-        var taskNamesLists = this.tasksList.map( (t) => {return t.getName();});
+    getTasksNamesList()
+    {
+        let taskNamesLists = this.tasksList.map( (t) => {return t.getName();});
         return taskNamesLists;
     }
 
-    getNextId(){
+    getNextId()
+    {
         let nextId = 1;
-        var listLenght = this.tasksList.length;
-        if (listLenght > 0){
+        let listLenght = this.tasksList.length;
+        if (listLenght > 0)
+        {
             nextId = this.tasksList[listLenght-1]["id"] + 1;
         }
         return nextId;
     }
 
     //js no soporta sobrecarga de metodos, not change to add.
-    addTask(newTask){
-        var newTaskName = newTask.getName();
-        let sentenceExpression = new RegExp('\\w+');
-        var hasNotOnlySpaces = newTaskName.match(sentenceExpression) != null;
-        var nameNotEmpty = newTaskName !="";
-        var id = this.getNextId();
+    addTask(newTask)
+    {
+        let newTaskName = newTask.getName();
+        let sentenceExpression = /\w+/;
+        let hasNotOnlySpaces = newTaskName.match(sentenceExpression) != null;
+        let nameNotEmpty = newTaskName !="";
+        let id = this.getNextId();
         if(hasNotOnlySpaces && nameNotEmpty)
         {
             newTask['id'] = id;
@@ -40,22 +45,26 @@ class TasksList {
         }
     }
 
-    add(newTaskName, description,category,deadline,isComplete){
-        let sentenceExpression = new RegExp('\\w+');
-        var hasNotOnlySpaces = newTaskName.match(sentenceExpression) != null;
-        var nameNotEmpty = newTaskName !="";
-        var id = this.getNextId();
+    add(newTaskName, description,category,deadline,isComplete)
+    {
+        let sentenceExpression = /\w+/;
+        let hasNotOnlySpaces = newTaskName.match(sentenceExpression) != null;
+        let nameNotEmpty = newTaskName !="";
+        let id = this.getNextId();
         if(hasNotOnlySpaces && nameNotEmpty)
         {
-            var newTask = new Task(id,newTaskName,description,category,deadline,isComplete);
+            let newTask = new Task(id,newTaskName,description,category,deadline,isComplete);
             newTask.extractTags();
             this.tasksList.push(newTask);
         }
     }
 
-    removeTask(taskId){
-        for(var i =0; i < this.tasksList.length; i++) {
-            if(this.tasksList[i].hasSameId(taskId)) {
+    removeTask(taskId)
+    {
+        for(let i =0; i < this.tasksList.length; i++)
+        {
+            if(this.tasksList[i].hasSameId(taskId))
+            {
                 this.tasksList.splice(i, 1);
             }
         }
@@ -63,97 +72,99 @@ class TasksList {
 
     getTask(taskId)
     {
-        var searchedTask = null;
-        for(var i=0; i<this.tasksList.length; i++)
+        let searchedTask = null;
+        for(let task of this.tasksList)
         {
-            if(this.tasksList[i].hasSameId(taskId))
+            if(task.hasSameId(taskId))
             {
-                searchedTask = this.tasksList[i];
+                searchedTask = task;
             }
         }
         return searchedTask;
     }
 
 
-    editTask(taskId,modifiedTask){
-        var taskToEdit = this.getTask(taskId);
+    editTask(taskId,modifiedTask)
+    {
+        let taskToEdit = this.getTask(taskId);
         if (taskToEdit!=null)
         {
             taskToEdit.set(modifiedTask);
         }
     }
 
-    filter(conditionLambda){
-        var filteredTaskList = new TasksList();
+    filter(conditionLambda)
+    {
+        let filteredTaskList = new TasksList();
         filteredTaskList.tasksList = this.tasksList.filter(conditionLambda);
         return filteredTaskList;
     }
 
-    filterTasksBy(taskFieldToMatch,pattern){
+    filterTasksBy(taskFieldToMatch,pattern)
+    {
         let patternRegExp = new RegExp(pattern, "i");
-        var matchedTasks = new TasksList();
-        matchedTasks = this.filter((t)=>patternRegExp.test(t[taskFieldToMatch]));
+        let matchedTasks = this.filter((t)=>patternRegExp.test(t[taskFieldToMatch]));
         return matchedTasks;
     }
 
     //suggar syntax, not test neccesary
-    filterByName(taskNamePattern){
-        var matchedTasks = this.filterTasksBy("name",taskNamePattern);
+    filterByName(taskNamePattern)
+    {
+        let matchedTasks = this.filterTasksBy("name",taskNamePattern);
         return matchedTasks;
     }
 
-    filterByDescription(description){
-        var matchedTasks = this.filterTasksBy("description",description);
+    filterByDescription(description)
+    {
+        let matchedTasks = this.filterTasksBy("description",description);
         return matchedTasks;
     }
 
-    filterByTag(tag){
+    filterByTag(tag)
+    {
         let patternRegExp = new RegExp(tag, "i");
-        var matchedTasks = this.filter((t)=>{
+        let matchedTasks = this.filter((t)=>{
             return patternRegExp.test(t.getTagsStr());
         });
         return matchedTasks;
     }
 
-    filterByCategory(category){
-        var matchedTasks = this.filterTasksBy("category",category);
+    filterByCategory(category)
+    {
+        let matchedTasks = this.filterTasksBy("category",category);
         return matchedTasks;
     }
 
-    searchByName(name){
-        for(var i=0; i<this.tasksList.length; i++)
+    searchByName(name)
+    {
+        for(let task of this.tasksList)
         {
-            if(this.tasksList[i].getName() == name) return this.tasksList[i];
+            if(task.getName() == name) return task;
         }
-        return;
     }
 
-    CompleteTask(taskId,isChecked){
-        /*var status;
-        if(isChecked===true){
-            status=true;
-        }else if(isChecked===false){
-            status=false;
-        }*/
+    CompleteTask(taskId,isChecked)
+    {
         let statusTask = new Task(taskId,null,null,null,null,isChecked);
         this.editTask(taskId,statusTask);
     }
 
     filterByComplete(isComplete)
     {
-        /*var tasksListIncompletes = [];
-        tasksListIncompletes = this.tasksList.filter(function(Task){return Task.isComplete === false})
-        return tasksListIncompletes;*/
-        var matchedTasks = this.filterTasksBy("isComplete",isComplete);
+        let matchedTasks = this.filterTasksBy("isComplete",isComplete);
         return matchedTasks;
     }
 
-    filterByDeadline(deadline){
-        var matchedTasks = new TasksList();
-        for(var i = 0; i < this.tasksList.length; i++){
-            if(this.tasksList[i].getOnlyTheDate() == deadline) matchedTasks.addTask(this.tasksList[i]);
+    filterByDeadline(deadline)
+    {
+        let matchedTasks = new TasksList();
+        for(let task of this.tasksList)
+        {
+            if(task.getOnlyTheDate() == deadline) matchedTasks.addTask(task);
         }
         return matchedTasks;
     }
+
 };
+
 export {TasksList as TasksList}

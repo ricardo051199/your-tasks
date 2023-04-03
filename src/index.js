@@ -1,27 +1,19 @@
 
-
 import { Task } from './Task.js';
 import { TasksList } from './TasksList.js';
-//const bootstrap = require('bootstrap');
-//
 
 const taskListOutput = document.querySelector("#final-list-output");
 
-var wrapper = document.querySelector('#final-list-output');
-//console.log('wrapper: ',wrapper);
+let wrapper = document.querySelector('#final-list-output');
 
 const formTasks = document.getElementById('formTasks');
 const taskName = document.getElementById('task-name-input');
 const taskDescription = document.getElementById('task-description-input');
 const taskDeadline = document.getElementById('task-deadline-input');
 const taskCategory = document.getElementById('category-select');
-const logo = document.getElementById('logo');
-//const btnCreateTask = document.getElementById('btnCreateTask');
-//console.log('create: ',btnCreateTask)
 
 const searchInput = document.getElementById('search-input');
 const taskTags = document.getElementById('task-tags-input');
-//console.log('search: ' ,searchInput)
 
 const searchForm = document.getElementById('search-form');
 const categoryInput = document.getElementById('category-input');
@@ -32,22 +24,25 @@ const btnSave = document.getElementById('btnSave');
 const bttnFilterByName = document.getElementById('bttn-search-by-name');
 const searchByNameBar = document.getElementById('search-by-name-bar');
 const btnShowModal = document.getElementById('btnShowModal');
+const taskModal = document.getElementById("task-modal");
 
-function filterTaskByName(){
+function filterTaskByName()
+{
     event.preventDefault();
-    var matchingTasks = tasksList;
+    let matchingTasks = tasksList;
     if(searchByNameBar.value != "") matchingTasks = tasksList.filterByName(searchByNameBar.value);
     if(matchingTasks.getTasksList().length == 0) taskListOutput.innerHTML =  "No se encontraron coincidencias";
     else updateHtml(matchingTasks);
 }
+
 bttnFilterByName.addEventListener("click",filterTaskByName);
 
-var tasksList = new TasksList();
+let tasksList = new TasksList();
 
 let option="";
 
-
-function clearInputValues(){
+function clearInputValues()
+{
     taskName.value = '';
     taskDescription.value = '';
     taskDeadline.value = '';
@@ -58,7 +53,7 @@ function clearInputValues(){
 //Search task by descriptions or tags
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    var matchingTasks = tasksList;
+    let matchingTasks = tasksList;
     console.log('search: ' + '"' + searchInput.value + '"' + ', category: ' + '"' + categoryInput.value + '"' + ', deadline: ' + '"' + deadlineInput.value + '"');
     if(searchInput.value != "") matchingTasks = matchingTasks.filterByDescription(searchInput.value);
     if(categoryInput.value != 'All') matchingTasks = matchingTasks.filterByCategory(categoryInput.value);
@@ -70,7 +65,8 @@ searchForm.addEventListener('submit', (event) => {
 
 let taskId;
 
-function fillTaskForm(task){
+function fillTaskForm(task)
+{
     taskName.value = task.getName();
     taskDescription.value = task.getDescription();
     taskDeadline.value=task.getDeadline();
@@ -80,25 +76,28 @@ function fillTaskForm(task){
 
 wrapper.addEventListener('click', (event) => {
     const isButton = event.target.nodeName === 'BUTTON';
-    if (!isButton) {
+    if (!isButton)
+    {
         return;
     }
     let buttonId = event.target.id;
 
     let regExpEdit = /-edit-/;
     let regExpDelete = /-del-/;
-    var isEdit = regExpEdit.test(buttonId)
-    var isDelete = regExpDelete.test(buttonId)
-    if(isEdit){
+    let isEdit = regExpEdit.test(buttonId)
+    let isDelete = regExpDelete.test(buttonId)
+    if(isEdit)
+    {
+        taskModal.style.display = "block";
         taskId = buttonId.split(regExpEdit)[1];
-        var task = tasksList.getTask(taskId);
+        let task = tasksList.getTask(taskId);
         fillTaskForm(task);
         buttonEdit.disabled = false;
         btnSave.disabled = true;
         buttonEdit.setAttribute("data-task-id",taskId);
-        //console.log(buttonEdit);
     }
-    else if(isDelete){
+    else if(isDelete)
+    {
         taskId= parseInt(buttonId.split(regExpDelete)[1]);
         tasksList.removeTask(taskId);
         updateHtml(tasksList);
@@ -110,9 +109,10 @@ wrapper.addEventListener('click',(event) => {
     console.log(event.target.checked)
     const valorCheck = event.target.checked;
     console.log(valorCheck)
-    if(!isCheck){
+    if(!isCheck)
+    {
         return;
-    } else{
+    } else {
         let checkId = event.target.id;
         console.log(checkId)
         let regExpCheck = /-checkbox-/;
@@ -125,17 +125,18 @@ wrapper.addEventListener('click',(event) => {
 
 formTasks.addEventListener("submit",event=>{
     event.preventDefault();
-    var task = new Task(null,taskName.value,taskDescription.value,taskCategory.value,taskDeadline.value);
+    let task = new Task(null,taskName.value,taskDescription.value,taskCategory.value,taskDeadline.value);
     task.extractTags();
     task.addTags(taskTags.value);
     tasksList.addTask(task);
     updateHtml(tasksList);
     clearInputValues();
+    taskModal.style.display = "none";
 })
 
 buttonEdit.addEventListener("click",()=>{
-    var taskId = buttonEdit.getAttribute("data-task-id");
-    var editedTask = new Task(null,taskName.value, taskDescription.value,taskCategory.value,taskDeadline.value)
+    let taskId = buttonEdit.getAttribute("data-task-id");
+    let editedTask = new Task(null,taskName.value, taskDescription.value,taskCategory.value,taskDeadline.value)
     editedTask.extractTags();
     editedTask.addTags(taskTags.value);
     tasksList.editTask(taskId, editedTask);
@@ -143,27 +144,31 @@ buttonEdit.addEventListener("click",()=>{
     updateHtml(tasksList);
     btnSave.disabled = false;
     clearInputValues();
+    taskModal.style.display = "none";
 });
 
 
-function updateHtml(taskListToShow){
+function updateHtml(taskListToShow)
+{
     let taskListHtml = getTasksListHtml(taskListToShow);
     taskListOutput.innerHTML =  taskListHtml;
 }
 
-function markCheckbox(){
+function markCheckbox()
+{
     document.querySelector('input[type="checkbox"]')
     console.log()
 }
 
-function introduceHtmlForTask(task, iteration){
+function introduceHtmlForTask(task, iteration)
+{
     wrapper = document.getElementById('final-list-output');
-    var checked = " ";
-    if(task.isComplete == true)
+    let checked = " ";
+    if(task.isComplete)
     {
         checked = "checked"
     }
-    var htmlListElement = `
+    let htmlListElement = `
     <div id="accordion-item-`+task["id"]+`" class="accordion-item">
         <input type="checkbox" name="" id="chb-checkbox-`+task["id"]+`" class="hidden-box" ${checked}>
         <label for="heading` + iteration + `" class="accordion-header check-label" id="heading` + iteration + `">       
@@ -197,7 +202,8 @@ function introduceHtmlForTask(task, iteration){
     return htmlListElement;
 }
 
-function getTasksListHtml(tasksList){
+function getTasksListHtml(tasksList)
+{
     let taskListHtml = "";
     let iteration = 0;
     tasksList.getTasksList().forEach(task => {
@@ -208,9 +214,9 @@ function getTasksListHtml(tasksList){
 }
 
 btnShowModal.addEventListener('click',(event) => {
-    document.getElementById("task-modal").style.display = "block";
+    taskModal.style.display = "block";
 })
 
 btnCloserModal.addEventListener('click',(event) => {
-    document.getElementById("task-modal").style.display = "none";
+    taskModal.style.display = "none";
 })

@@ -1,12 +1,15 @@
-function getTags(text){
-    var tagStructure = /#(\w)+\b/g;
-    var tags = text.match(tagStructure) ?? [];
+function getTags(text)
+{
+    let tagStructure = /#(\w)+\b/g;
+    let tags = text.match(tagStructure) ?? [];
     tags = tags.filter((value,index)=>tags.indexOf(value)===index)
     return tags;
 }
 
 class Task {
-    constructor(id,name,description,category, deadline, isComplete) {
+
+    constructor(id,name,description,category, deadline, isComplete)
+    {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -16,15 +19,21 @@ class Task {
         this.tags = []
 
     }
-    getName(){
+
+    getName()
+    {
         return this.name;
     }
-    setTask(newName, newDescription,newDeadline){
+
+    setTask(newName, newDescription,newDeadline)
+    {
         this.name = newName;
         this.description = newDescription;
         this.deadline=newDeadline;
     }
-    set(newTask){
+
+    set(newTask)
+    {
         this.name = newTask.name ?? this.name;
         this.description = newTask.description ?? this.description;
         this.deadline = newTask.deadline;
@@ -32,45 +41,58 @@ class Task {
         this.isComplete = newTask.isComplete;
         this.tags = newTask.tags;
     }
-    getDescription(){
+
+    getDescription()
+    {
         return this.description;
     }
+
     hasSameId(id)
     {
         return this.id == id;
     }
-    getDeadline(){
+
+    getDeadline()
+    {
         return this.deadline;
     }
-    /*getTags(){
-        return this.tags;
-    }*/
-    extractTags(){
-        var isDescriptionSet = this.description != undefined || this.description != null;
+
+    extractTags()
+    {
+        let isDescriptionSet = this.description != undefined || this.description != null;
         if(isDescriptionSet){
             this.tags = getTags(this.description);
         }
         return this.tags;
     }
-    getTagsStr(){
+
+    getTagsStr()
+    {
         return this.tags.join(' ');
     }
-    getCategory(){
+
+    getCategory()
+    {
         return this.category;
     }
-    addTags(strOfTags){
+
+    addTags(strOfTags)
+    {
         this.tags = getTags(this.getTagsStr()+' '+strOfTags);
         //To keep description tags functionalitie
     }
-    getOnlyTheDate(){
+
+    getOnlyTheDate()
+    {
         console.log(this.deadline);
-        var matchArray = this.deadline.match(/^(\d*\-\d*\-\d*)([a-zA-Z])(\d*)(\:)(\d*)$/);
+        let matchArray = this.deadline.match(/^(\d*\-\d*\-\d*)([a-zA-Z])(\d*)(\:)(\d*)$/);
         console.log(matchArray);
-        var date;
+        let date;
         if(matchArray != null) date = matchArray[1];
         else date = "";
         return date;
     }
+
 }
 
 export {Task,getTags}
